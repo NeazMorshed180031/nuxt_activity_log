@@ -72,9 +72,8 @@
   </section>
 </template>
 <script setup>
-
-const email = ref('contactbdit1971@gmail.com')
-const password = ref('12345@Aa')
+const email = ref('superadmin@gmail.com')
+const password = ref('12345678')
 let result
 const msg = ref('')
 const config = useRuntimeConfig()
@@ -104,7 +103,7 @@ async function submit() {
   let data = new FormData()
   data.append('email', email.value)
   data.append('password', password.value)
-  result = await fetch(config.public.USER_LOGIN_URL, {
+  result = await fetch(`${config.public.BASE_URLS}api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
 

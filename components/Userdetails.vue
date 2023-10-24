@@ -10,6 +10,11 @@
     >
       <NuxtLink to="/activity">User Activity Log</NuxtLink>
     </button>
+    <button
+      class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >
+      <NuxtLink to="/activityreport">User Activity Report</NuxtLink>
+    </button>
   </div>
 
   <div>
@@ -145,7 +150,7 @@ async function getuserdetails() {
   // active:bg-violet-700
 
   const token = localStorage.getItem('TOKEN')
-  let result = await fetch(config.public.USER_BASE_URL, {
+  let result = await fetch(`${config.public.BASE_URLS}api/users`, {
     method: 'GET',
     // headers: { 'bearer': 'application/json' },
     headers: {

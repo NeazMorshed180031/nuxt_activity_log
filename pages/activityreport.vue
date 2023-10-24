@@ -1,10 +1,10 @@
 <template>
-  <Login />
+  <Activityreport />
 </template>
 <script setup>
 onUpdated(() => {
   definePageMeta({
-    layout: 'loginsignup',
+    layout: 'useradmin',
   })
 })
 </script>

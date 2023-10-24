@@ -7,43 +7,15 @@
       <NuxtLink to="/users">User Information</NuxtLink>
     </button>
     <button
-      class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn"
+      class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
     >
       <NuxtLink to="/activity">User Activity Log</NuxtLink>
     </button>
-
     <button
-      class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn"
     >
       <NuxtLink to="/activityreport">User Activity Report</NuxtLink>
     </button>
-  </div>
-
-  <div>
-    <form @submit.prevent="getuseractivitybydate(date)">
-      <label
-        for="default-search"
-        class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >
-        Search
-      </label>
-      <div class="relative">
-        <div class="flex justify-center sm:justify-end mr-1">
-          <input
-            v-model="searchdata"
-            type="search"
-            class="block w-25 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search.."
-          />
-          <button
-            type="submit"
-            class="text-white absolute right-20 mr-15 sm:right-2.5 bottom-2.5 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-    </form>
   </div>
 
   <div class="flex justify-center p-1 sm:justify-end">
@@ -71,7 +43,7 @@
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <h1 class="font-bold text-center p-1 underline text-slate-800">
-      User Activity
+      User Activity Report
     </h1>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead
@@ -85,22 +57,13 @@
             Name
           </th>
           <th scope="col" class="px-6 py-3">
-            IP Address
+            Email
           </th>
           <th scope="col" class="px-6 py-3">
-            OS
+            Role
           </th>
           <th scope="col" class="px-6 py-3">
-            Browser
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Device
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Activity
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Time
+            Activity Count
           </th>
         </tr>
       </thead>
@@ -127,22 +90,13 @@
             {{ value.user.name }}
           </th>
           <td class="px-6 py-4 text-black">
-            {{ value.ipAddress }}
+            {{ value.user.email }}
           </td>
           <td class="px-6 py-4 text-black">
-            {{ value.os }}
+            {{ value.user.role }}
           </td>
           <td class="px-6 py-4 text-black">
-            {{ value.browser }}
-          </td>
-          <td class="px-6 py-4 text-black">
-            {{ value.device }}
-          </td>
-          <td class="px-6 py-4 text-black">
-            {{ value.activity }}
-          </td>
-          <td class="px-6 py-4 text-black">
-            {{ moment(String(value.createdAt)).format('MM/DD/YYYY hh:mm A') }}
+            {{ value.activityCount }}
           </td>
         </tr>
       </tbody>
@@ -231,7 +185,7 @@ async function getuseractivityreport() {
   enddate.value = moment(String(new Date())).format('YYYY/MM/DD')
   const token = localStorage.getItem('TOKEN')
   let result = await fetch(
-    `${config.public.BASE_URLS}api/users/activity-logs?startDate=${moment(
+    `${config.public.BASE_URLS}api/users/activity-reports?startDate=${moment(
       String(onemonthprev),
     ).format('YYYY-MM-DD')}&endDate=${moment(String(new Date())).format(
       'YYYY-MM-DD',
@@ -249,7 +203,7 @@ async function getuseractivityreport() {
   console.log(tables.value)
 }
 
-async function getuseractivitybydate(data) {
+async function getuseractivityreportbydate(data) {
   console.log('Helloooooooooooo')
   console.log(searchdata.value)
   startdate.value = moment(String(data.start)).format('YYYY/MM/DD')
@@ -259,11 +213,11 @@ async function getuseractivitybydate(data) {
 
   const token = localStorage.getItem('TOKEN')
   let result = await fetch(
-    `${config.public.BASE_URLS}api/users/activity-logs?startDate=${moment(
+    `${config.public.BASE_URLS}api/users/activity-reports?startDate=${moment(
       String(data.start),
     ).format('YYYY/MM/DD')}&endDate=${moment(String(data.end)).format(
       'YYYY/MM/DD',
-    )}&name=${searchdata.value}`,
+    )}`,
     {
       method: 'GET',
       // headers: { 'bearer': 'application/json' },
@@ -272,7 +226,7 @@ async function getuseractivitybydate(data) {
       },
     },
   ).then((res) => res.json())
-  console.log('result', result.data)
+  console.log('result', result)
   tables.value = result.data
   console.log(tables.value)
 }

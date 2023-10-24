@@ -229,7 +229,7 @@ async function submit() {
   data.append('phone', phone.value)
   data.append('profile_pic', img.value)
   const configs = useRuntimeConfig()
-  const URL = configs.public.USER_REGISTER_URL
+  const URL = `${config.public.BASE_URLS}api/auth/register`
   let config = {
     header: {
       'Content-Type': 'image/.jpg',
