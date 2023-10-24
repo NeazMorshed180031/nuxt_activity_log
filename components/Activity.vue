@@ -13,6 +13,7 @@
     </button>
 
     <button
+      v-show="btnshow"
       class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
     >
       <NuxtLink to="/activityreport">User Activity Report</NuxtLink>
@@ -20,7 +21,7 @@
   </div>
 
   <div>
-    <form @submit.prevent="getuseractivitybydate(date)">
+    <form @submit.prevent="getuseractivitybydate(date)" v-show="btnshow">
       <label
         for="default-search"
         class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -64,7 +65,7 @@
     <VDatePicker
       v-model.range="range"
       v-model="date"
-      @click="getuseractivityreportbydate(date)"
+      @click="getuseractivitybydate(date)"
       :attributes="attrs"
     />
   </div>

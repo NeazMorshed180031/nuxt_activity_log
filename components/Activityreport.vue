@@ -12,6 +12,7 @@
       <NuxtLink to="/activity">User Activity Log</NuxtLink>
     </button>
     <button
+      v-show="btnshow"
       class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn"
     >
       <NuxtLink to="/activityreport">User Activity Report</NuxtLink>
@@ -168,6 +169,7 @@ function expiryvalidation() {
       if (role == 'user') {
         router.push('/activity')
       } else {
+
         btnshow.value = 1
       }
     } else {
