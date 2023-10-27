@@ -1,16 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   runtimeConfig: {
     public: {
       BASE_URL: process.env.IMAGE_BASE_URL, // can be overridden by NUXT_PUBLIC_API_BASE environment variable
-
       BASE_URLS: process.env.BASE_URL,
     },
   },
   // css: ["bootstrap/dist/css/bootstrap.min.css"],
   css: ["~/assets/css/tailwind.css"],
-  modules: ["@nuxtjs/tailwindcss", "@samk-dev/nuxt-vcalendar"],
+  modules: ["@samk-dev/nuxt-vcalendar", "@nuxt/ui"],
+  // plugins:['~/plugins/emitter.js'],
 
   app: {
     head: {

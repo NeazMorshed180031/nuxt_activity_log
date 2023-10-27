@@ -6,7 +6,6 @@
       >
         <div>
           <NuxtLink to="/" class="font-bold text-blue-800">
-            <!-- <img src="/image/logo-Usable-450x300.png" width="70px" height="30px" /> -->
             <myImage />
           </NuxtLink>
         </div>

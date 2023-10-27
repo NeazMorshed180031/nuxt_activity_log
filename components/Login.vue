@@ -72,8 +72,8 @@
   </section>
 </template>
 <script setup>
-const email = ref('contactbdit1971@gmail.com')
-const password = ref('12345@Aa')
+const email = ref('superadmin@gmail.com')
+const password = ref('12345678')
 let result
 const msg = ref('')
 const config = useRuntimeConfig()
@@ -87,13 +87,10 @@ function validation() {
     router.push('/')
   } else {
     let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
-    console.log(exp)
-    if (exp > Date.now()) {
-      console.log('fire1')
 
+    if (exp > Date.now()) {
       router.push('/users')
     } else {
-      console.log('fire1')
       router.push('/')
     }
   }
@@ -113,17 +110,13 @@ async function submit() {
     }),
   }).then((res) => res.json())
 
-  console.log('Login', result.msg)
-  console.log('Login', result.message)
   if (result.message) {
-    console.log('success')
     localStorage.setItem('TOKEN', result.access_token)
     router.push('/users')
   }
 
   if (result.msg) {
     msg.value = result.msg
-    console.log('Fire2')
   }
 }
 

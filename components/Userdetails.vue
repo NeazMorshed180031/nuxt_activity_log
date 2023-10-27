@@ -131,22 +131,18 @@ function validation() {
     router.push('/')
   } else {
     let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
-    console.log(exp)
+
     if (exp > Date.now()) {
-      console.log('fire1')
       if (role == 'user') {
         router.push('/activity')
       }
     } else {
-      console.log('fire2')
       router.push('/')
     }
   }
 }
 
 async function getuserdetails() {
-  console.log('Helloooooooooooo')
-
   // active:bg-violet-700
 
   const token = localStorage.getItem('TOKEN')
@@ -158,12 +154,9 @@ async function getuserdetails() {
     },
   }).then((res) => res.json())
   tables.value = result.data
-  console.log(result.data)
 }
 
 async function getsearcheduserdetails() {
-  console.log('Helloooooooooooo')
-  console.log(searchdata.value)
   // active:bg-violet-700
 
   const token = localStorage.getItem('TOKEN')
@@ -178,7 +171,6 @@ async function getsearcheduserdetails() {
     },
   ).then((res) => res.json())
   tables.value = result.data
-  console.log(result.data)
 }
 
 onMounted(() => {

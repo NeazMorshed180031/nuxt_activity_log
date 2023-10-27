@@ -148,6 +148,15 @@
         </tr>
       </tbody>
     </table>
+    <div class="flex justify-center sm:justify-center mt-2 mb-2" v-if="chk">
+      <UPagination
+        v-model="pageno"
+        :page-count="10"
+        :total="total"
+        :active-button="{ color: 'blue' }"
+        @click="paginationpage(pageno, date)"
+      />
+    </div>
   </div>
 </template>
 
@@ -159,7 +168,7 @@
 </style>
 <script setup>
 import moment from 'moment'
-
+const pageno = ref(1)
 const attrs = ref([
   {
     key: 'today',
@@ -172,71 +181,42 @@ const attrs = ref([
 ])
 
 const onemonthprev = subtractMonths(new Date(), 1)
-console.log(onemonthprev)
 
 const range = ref({
   start: onemonthprev,
   end: new Date(),
 })
 
+const chk = ref(0)
 const tables = ref([])
-const values = ref([])
-const paginateData = ref(null)
-const paginate = ref({ page: null })
 const config = useRuntimeConfig()
 const url = config.public.BASE_URL
 const router = useRouter()
 const btnshow = ref(0)
-const date = ref({ start: '', end: '' })
+
 const searchdata = ref('')
 const startdate = ref('')
 const enddate = ref('')
 const showdate = ref(0)
+const total = ref()
 
-console.log(date.value)
-console.log(attrs.value)
+const date = ref({ start: range.value.start, end: range.value.end })
+
+let totalval = total.value
 
 function subtractMonths(date, months) {
   date.setMonth(date.getMonth() - months)
   return date
 }
 
-function expiryvalidation() {
-  let token = localStorage.getItem('TOKEN')
-  console.log(JSON.parse(atob(token.split('.')[1])).role)
-  let role = JSON.parse(atob(token.split('.')[1])).role
-  if (token === null) {
-    router.push('/')
-  } else {
-    let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
-    console.log(exp)
-    if (exp > Date.now()) {
-      console.log('fire1')
-      if (role == 'user') {
-        router.push('/activity')
-      } else {
-        btnshow.value = 1
-      }
-    } else {
-      console.log('fire2')
-      router.push('/')
-    }
-  }
-}
-
-async function getuseractivityreport() {
-  console.log('Helloooooooooooo')
-
-  const onemonthprev = subtractMonths(new Date(), 1)
-  startdate.value = moment(String(onemonthprev)).format('YYYY/MM/DD')
-  enddate.value = moment(String(new Date())).format('YYYY/MM/DD')
+async function paginationpage(pagenumber, data) {
   const token = localStorage.getItem('TOKEN')
   let result = await fetch(
     `${config.public.BASE_URLS}api/users/activity-logs?startDate=${moment(
-      String(onemonthprev),
-    ).format('YYYY-MM-DD')}&endDate=${moment(String(new Date())).format(
+      String(data.start),
+    ).format('YYYY-MM-DD')}&endDate=${moment(String(data.end)).format(
       'YYYY-MM-DD',
-    )}`,
+    )}&page=${pagenumber}&name=${searchdata.value}`,
     {
       method: 'GET',
       // headers: { 'bearer': 'application/json' },
@@ -245,25 +225,77 @@ async function getuseractivityreport() {
       },
     },
   ).then((res) => res.json())
-  console.log('result', result.data)
-  tables.value = result.data
-  console.log(tables.value)
+
+  total.value = result.data.count
+
+  tables.value = result.data.rows
+}
+
+function expiryvalidation() {
+  let token = localStorage.getItem('TOKEN')
+
+  let role = JSON.parse(atob(token.split('.')[1])).role
+  if (token === null) {
+    router.push('/')
+  } else {
+    let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
+
+    if (exp > Date.now()) {
+      if (role == 'user') {
+        router.push('/activity')
+      } else {
+        btnshow.value = 1
+      }
+    } else {
+      router.push('/')
+    }
+  }
+}
+
+async function getuseractivityreport() {
+  const onemonthprev = subtractMonths(new Date(), 1)
+  startdate.value = moment(String(onemonthprev)).format('YYYY-MM-DD')
+  enddate.value = moment(String(new Date())).format('YYYY-MM-DD')
+  const token = localStorage.getItem('TOKEN')
+  let result = await fetch(
+    `${config.public.BASE_URLS}api/users/activity-logs?startDate=${moment(
+      String(onemonthprev),
+    ).format('YYYY-MM-DD')}&endDate=${moment(String(new Date())).format(
+      'YYYY-MM-DD',
+    )}&page=1`,
+    {
+      method: 'GET',
+      // headers: { 'bearer': 'application/json' },
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    },
+  ).then((res) => res.json())
+
+  total.value = result.data.count
+
+  totalval = total.value
+
+  // btncreate(total.value, 1)
+  chk.value = 1
+  // total.value = 0
+
+  tables.value = result.data.rows
 }
 
 async function getuseractivitybydate(data) {
-  console.log('Helloooooooooooo')
   console.log(searchdata.value)
   startdate.value = moment(String(data.start)).format('YYYY/MM/DD')
   enddate.value = moment(String(data.end)).format('YYYY/MM/DD')
-
-  // active:bg-violet-700
+  console.log(data.start)
+  console.log(data.end)
 
   const token = localStorage.getItem('TOKEN')
   let result = await fetch(
     `${config.public.BASE_URLS}api/users/activity-logs?startDate=${moment(
       String(data.start),
-    ).format('YYYY/MM/DD')}&endDate=${moment(String(data.end)).format(
-      'YYYY/MM/DD',
+    ).format('YYYY-MM-DD')}&endDate=${moment(String(data.end)).format(
+      'YYYY-MM-DD',
     )}&name=${searchdata.value}`,
     {
       method: 'GET',
@@ -273,9 +305,9 @@ async function getuseractivitybydate(data) {
       },
     },
   ).then((res) => res.json())
-  console.log('result', result.data)
-  tables.value = result.data
-  console.log(tables.value)
+  console.log('result', result)
+  tables.value = result.data.rows
+  total.value = result.data.count
 }
 
 onMounted(() => {

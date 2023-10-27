@@ -215,12 +215,9 @@ const router = useRouter()
 
 function uploadimg(e) {
   img.value = e.target.files[0]
-  console.log(img.value)
 }
 
 async function submit() {
-  console.log('Hello' + names.value)
-  console.log('Hello' + img.value)
   let data = new FormData()
   data.append('name', names.value)
   data.append('email', email.value)
@@ -239,16 +236,11 @@ async function submit() {
   let result = axios
     .post(URL, data, config)
     .then((response) => {
-      console.log('Registration page upload > ', response.data.message)
       msg.value = response.data.message
       router.push('/')
     })
     .catch((response) => {
-      console.log('&&&&&&&&&&&', response)
-
-      console.log('++++++', response.response.data.errors[0].msg)
       if (response.response.data.errors[0].msg) {
-        console.log('fire')
         msg.value = response.response.data.errors[0].msg
       }
     })

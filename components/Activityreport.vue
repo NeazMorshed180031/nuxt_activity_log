@@ -169,7 +169,6 @@ function expiryvalidation() {
       if (role == 'user') {
         router.push('/activity')
       } else {
-
         btnshow.value = 1
       }
     } else {
@@ -210,8 +209,6 @@ async function getuseractivityreportbydate(data) {
   console.log(searchdata.value)
   startdate.value = moment(String(data.start)).format('YYYY/MM/DD')
   enddate.value = moment(String(data.end)).format('YYYY/MM/DD')
-
-  // active:bg-violet-700
 
   const token = localStorage.getItem('TOKEN')
   let result = await fetch(

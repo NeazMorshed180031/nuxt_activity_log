@@ -36,8 +36,6 @@ const router = useRouter()
 async function logout() {
   let localtoken = localStorage.getItem('TOKEN')
   let token = JSON.parse(atob(localtoken.split('.')[1])).userId
-  console.log('layout', JSON.parse(atob(localtoken.split('.')[1])).userId)
-  console.log(token)
 
   let result = await fetch('http://localhost:3004/api/auth/logout', {
     method: 'POST',
@@ -55,6 +53,5 @@ async function logout() {
     console.log('removeitem'),
     router.push('/'),
   )
-  console.log('R%R%R%R%R%R%R%', result)
 }
 </script>

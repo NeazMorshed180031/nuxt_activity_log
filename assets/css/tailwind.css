@@ -5,14 +5,12 @@
 body {
   @apply bg-gray-50;
 
-    font-family: "DIN Alternate", sans-serif;
-    font-size: 16px;
-
-
+  font-family: "DIN Alternate", sans-serif;
+  font-size: 16px;
 }
 
 @layer components {
   .btn {
-    @apply bg-[#0c0d2b] text-white px-3 py-2 rounded-md text-sm text-white;
+    @apply bg-[#0c0d2b] text-white px-3 py-2 rounded-md text-sm;
   }
 }
