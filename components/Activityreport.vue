@@ -126,7 +126,6 @@ const attrs = ref([
 ])
 
 const onemonthprev = subtractMonths(new Date(), 1)
-console.log(onemonthprev)
 
 const range = ref({
   start: onemonthprev,
@@ -147,9 +146,6 @@ const startdate = ref('')
 const enddate = ref('')
 const showdate = ref(0)
 
-console.log(date.value)
-console.log(attrs.value)
-
 function subtractMonths(date, months) {
   date.setMonth(date.getMonth() - months)
   return date
@@ -157,30 +153,26 @@ function subtractMonths(date, months) {
 
 function expiryvalidation() {
   let token = localStorage.getItem('TOKEN')
-  console.log(JSON.parse(atob(token.split('.')[1])).role)
+
   let role = JSON.parse(atob(token.split('.')[1])).role
   if (token === null) {
     router.push('/')
   } else {
     let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
-    console.log(exp)
+
     if (exp > Date.now()) {
-      console.log('fire1')
       if (role == 'user') {
         router.push('/activity')
       } else {
         btnshow.value = 1
       }
     } else {
-      console.log('fire2')
       router.push('/')
     }
   }
 }
 
 async function getuseractivityreport() {
-  console.log('Helloooooooooooo')
-
   const onemonthprev = subtractMonths(new Date(), 1)
   startdate.value = moment(String(onemonthprev)).format('YYYY/MM/DD')
   enddate.value = moment(String(new Date())).format('YYYY/MM/DD')
@@ -199,14 +191,11 @@ async function getuseractivityreport() {
       },
     },
   ).then((res) => res.json())
-  console.log('result', result.data)
+
   tables.value = result.data
-  console.log(tables.value)
 }
 
 async function getuseractivityreportbydate(data) {
-  console.log('Helloooooooooooo')
-  console.log(searchdata.value)
   startdate.value = moment(String(data.start)).format('YYYY/MM/DD')
   enddate.value = moment(String(data.end)).format('YYYY/MM/DD')
 
@@ -225,9 +214,8 @@ async function getuseractivityreportbydate(data) {
       },
     },
   ).then((res) => res.json())
-  console.log('result', result)
+
   tables.value = result.data
-  console.log(tables.value)
 }
 
 onMounted(() => {

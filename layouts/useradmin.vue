@@ -48,9 +48,8 @@ async function logout() {
       userId: token,
     }),
   }).then(
-    (res) => console.log(res),
     localStorage.removeItem('TOKEN'),
-    console.log('removeitem'),
+
     router.push('/'),
   )
 }

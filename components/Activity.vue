@@ -284,11 +284,8 @@ async function getuseractivityreport() {
 }
 
 async function getuseractivitybydate(data) {
-  console.log(searchdata.value)
   startdate.value = moment(String(data.start)).format('YYYY/MM/DD')
   enddate.value = moment(String(data.end)).format('YYYY/MM/DD')
-  console.log(data.start)
-  console.log(data.end)
 
   const token = localStorage.getItem('TOKEN')
   let result = await fetch(
@@ -305,7 +302,7 @@ async function getuseractivitybydate(data) {
       },
     },
   ).then((res) => res.json())
-  console.log('result', result)
+
   tables.value = result.data.rows
   total.value = result.data.count
 }
