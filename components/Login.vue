@@ -64,8 +64,8 @@
   </section>
 </template>
 <script setup>
-const email = ref('superadmin@gmail.com')
-const password = ref('12345678')
+const email = ref('')
+const password = ref('')
 let result
 const msg = ref('')
 const config = useRuntimeConfig()
